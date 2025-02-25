@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
-import { Bell, LogOut, Users, ClipboardList } from 'lucide-react';
+import { Bell, LogOut, Users, ClipboardList} from 'lucide-react';
 import { useState } from 'react';
 import ManageStudents from './ManageStudents';
 import Attendance from "./Attendance";
-
+import UploadMarks from "./UploadMarks";
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
@@ -12,7 +12,7 @@ const TeacherDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/signin');
+    navigate('/');
   };
 
   return (
@@ -40,6 +40,14 @@ const TeacherDashboard = () => {
               onClick={() => setActiveSection("attendance")}
             >
               Attendance
+            </button>
+             <button
+              className={`w-full py-2 px-4 mb-2 text-left rounded-lg ${
+                activeSection === "upload-marks" ? "bg-indigo-500 text-white" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveSection("upload-marks")}
+            >
+              Upload Marks
             </button>
             <button className="w-full py-2 px-4 mb-2 text-left rounded-lg hover:bg-gray-200">
               Assignments
@@ -84,6 +92,7 @@ const TeacherDashboard = () => {
         
         {activeSection === "manage-students" && <ManageStudents/>}
         {activeSection === "attendance" && <Attendance />}
+        {activeSection === "upload-marks" && <UploadMarks />}
       </div>
     </div>
   );

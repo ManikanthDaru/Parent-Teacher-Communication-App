@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../Axios/AxiosInstance";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
+import useAuthStore from "../../store/authStore";
 const COLORS = ["#4CAF50", "#F44336"]; // Green for Present, Red for Absent
 
 const Attendance = () => {
+   const { token } = useAuthStore();
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -14,7 +15,9 @@ const Attendance = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        const response = await axiosInstance.get("/attendance/child");
+        const response = await axiosInstance.get("/attendance/child",{
+      headers: { Authorization: `Bearer ${token}` },
+    });
         setAttendance(response.data);
 
         // Calculate the attendance summary
@@ -30,7 +33,7 @@ const Attendance = () => {
     };
 
     fetchAttendance();
-  }, []);
+  }, [token]);
 
   if (loading) return <p>Loading attendance...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
