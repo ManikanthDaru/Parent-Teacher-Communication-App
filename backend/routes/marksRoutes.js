@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Marks = require('../models/Marks');
+const Student= require('../models/Student');
 const authMiddleware = require('../middleware/authMiddleware'); // Ensure only teachers can add marks
 const teacherOnly = require('../middleware/teacherOnly');
 // POST: Add Marks for a Student
@@ -37,36 +38,35 @@ router.post('/add', authMiddleware, teacherOnly, async (req, res) => {
     }
 });
 
-// GET: Fetch Marks by Student ID
-router.get('/:studentId', authMiddleware, async (req, res) => {
-    try {
-        const marks = await Marks.find({ student: req.params.studentId }).populate('student', 'name rollNo class section');
-        if (!marks) return res.status(404).json({ message: 'Marks not found' });
-
-        res.json(marks);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching marks', error: error.message });
+router.get("/exam/:examType", authMiddleware, async (req, res) => {
+  try {
+      const { examType } = req.params;
+      console.log(examType);
+    // Ensure only parents can access this route
+    if (req.user.role !== "parent") {
+      return res.status(403).json({ message: "Access denied. Only parents can view this data." });
     }
-});
 
-// GET: Fetch All Marks (for teachers)
-router.get('/', authMiddleware, teacherOnly, async (req, res) => {
-    try {
-        const marks = await Marks.find().populate('student', 'name rollNo class section');
-        res.json(marks);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching marks', error: error.message });
-    }
-});
+    // Find the student(s) linked to the parent
+      const student = await Student.findOne({ parentName: req.user.name });
+      console.log(student);
 
-// DELETE: Remove Marks by ID
-router.delete('/:id', authMiddleware, teacherOnly, async (req, res) => {
-    try {
-        await Marks.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Marks deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting marks', error: error.message });
+    if (!student) {
+      return res.status(404).json({ message: "No student linked to this parent." });
     }
+
+    // Fetch the marks for the student based on the exam type
+    const marks = await Marks.findOne({ student: student._id, examType: examType }).populate("student", "name rollNo class section");
+      // console.log(marks);
+    if (!marks) {
+      return res.status(200).json({ message: "No marks found for this exam type." });
+    }
+
+    res.status(200).json(marks);
+  } catch (error) {
+    console.error("Error fetching marks:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 });
 
 module.exports = router;
