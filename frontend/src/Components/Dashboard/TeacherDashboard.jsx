@@ -5,6 +5,8 @@ import { useState } from 'react';
 import ManageStudents from './ManageStudents';
 import Attendance from "./Attendance";
 import UploadMarks from "./UploadMarks";
+import Assignments from "./Assignments"; 
+
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -51,7 +53,12 @@ const TeacherDashboard = () => {
             >
               Upload Marks
             </button>
-            <button className="w-full py-2 px-4 mb-2 text-left rounded-lg hover:bg-gray-200">
+            <button
+              className={`w-full py-2 px-4 mb-2 text-left rounded-lg ${
+                activeSection === "assignments" ? "bg-indigo-500 text-white" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveSection("assignments")}
+            >
               Assignments
             </button>
           </nav>
@@ -97,6 +104,7 @@ const TeacherDashboard = () => {
         {activeSection === "manage-students" && <ManageStudents />}
         {activeSection === "attendance" && <Attendance />}
         {activeSection === "upload-marks" && <UploadMarks />}
+        {activeSection === "assignments" && <Assignments />}
       </div>
     </div>
   );
