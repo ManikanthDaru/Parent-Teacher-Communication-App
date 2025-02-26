@@ -26,7 +26,7 @@ router.post("/mark", authMiddleware, async (req, res) => {
       teacherId,
     }));
 
-    console.log("Saving to database:", attendanceRecords);
+    // console.log("Saving to database:", attendanceRecords);
     await Attendance.insertMany(attendanceRecords);
 
     res.status(201).json({ message: "Attendance recorded successfully" });

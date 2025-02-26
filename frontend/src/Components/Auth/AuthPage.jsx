@@ -10,7 +10,7 @@ import useAuthStore from "../../store/authStore";
 
 const AuthPage = ({ type, role }) => {
   const navigate = useNavigate();
-  console.log(type);
+  // console.log(type);
   // const isSignUp = type === "signup";
   const isParent = role === "parent";
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +28,7 @@ const AuthPage = ({ type, role }) => {
     const res = await axiosInstance.post(`/auth/login`, {
       ...formData,
       role,
+      type,
     });
 
     // Use the role prop instead of response data

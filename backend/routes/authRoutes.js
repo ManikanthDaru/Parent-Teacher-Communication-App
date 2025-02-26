@@ -12,7 +12,8 @@ router.post('/login', async (req, res) => {
   }
   const user = await User.findOne({ email });
   if (!user) return res.status(400).send('User not found');
-
+  const isMatchRole = user.role === req.body.role;
+  if(!isMatchRole) return res.status(400).send('Not the correct role');
   const isMatch = password === user.password;
   if (!isMatch) return res.status(400).send('Invalid credentials');
 
