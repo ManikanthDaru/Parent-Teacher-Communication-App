@@ -100,7 +100,7 @@ const UploadMarks = () => {
         </select>
 
         {/* Marks Input Fields */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-3 gap-6">
           {Object.keys(marks).map((subject) => (
             <div key={subject}>
               <label className="block text-gray-700 font-medium mb-1">{subject}</label>

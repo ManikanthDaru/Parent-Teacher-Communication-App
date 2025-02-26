@@ -14,13 +14,14 @@ const ParentDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/signin');
+    navigate('/');
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <div className="w-64 bg-white shadow-lg p-5 flex flex-col h-full justify-between">
-        <div>
+      {/* Fixed Sidebar */}
+      <div className="w-64 bg-white shadow-lg p-5 flex flex-col h-screen fixed left-0 top-0">
+        <div className="flex-1">
           <h2 className="text-2xl font-semibold mb-6">Parent Dashboard</h2>
           <nav>
             <button
@@ -63,7 +64,8 @@ const ParentDashboard = () => {
         </button>
       </div>
 
-      <div className="flex-1 p-6">
+      {/* Scrollable Content */}
+      <div className="flex-1 ml-64 p-6 overflow-y-auto h-screen">
         {activeSection === 'dashboard' && (
           <>
             <div className="flex justify-between items-center mb-6">
@@ -91,7 +93,7 @@ const ParentDashboard = () => {
             </div>
           </>
         )}
-         {activeSection === 'attendance' && <ChildAttendance />}
+        {activeSection === 'attendance' && <ChildAttendance />}
         {activeSection === 'progress' && <ChildProgress />}
         {activeSection === 'communication' && <ParentCommunication />}
         {activeSection === 'notifications' && <Notifications />}
