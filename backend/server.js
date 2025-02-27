@@ -9,6 +9,7 @@ const attendanceRoutes = require("./routes/attendanceRoutes");
 const marksRoutes = require("./routes/marksRoutes");
 const geminiRoutes = require("./routes/geminiRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
+const queryRoutes = require("./routes/queryRoutes");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/marks", marksRoutes);
 app.use("/api/gemini", geminiRoutes);
 app.use("/api/assignments", assignmentRoutes);
+app.use("/api/query", queryRoutes);
 
 const PORT = process.env.PORT || 5000;
 

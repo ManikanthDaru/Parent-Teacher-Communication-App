@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
-import { Bell, LogOut, Users, ClipboardList } from 'lucide-react';
+import { Bell, LogOut, Users, ClipboardList,CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 import ManageStudents from './ManageStudents';
 import Attendance from "./Attendance";
 import UploadMarks from "./UploadMarks";
 import Assignments from "./Assignments"; 
-
+import SolveQuery from "./SolveQuery";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -61,6 +61,15 @@ const TeacherDashboard = () => {
             >
               Assignments
             </button>
+            <button
+  className={`w-full py-2 px-4 mb-2 text-left rounded-lg ${
+    activeSection === "solve-query" ? "bg-indigo-500 text-white" : "hover:bg-gray-200"
+  }`}
+  onClick={() => setActiveSection("solve-query")}
+>
+  <CheckCircle className="w-5 h-5 inline-block mr-2" /> Solve Query
+</button>
+
           </nav>
         </div>
         
@@ -105,6 +114,7 @@ const TeacherDashboard = () => {
         {activeSection === "attendance" && <Attendance />}
         {activeSection === "upload-marks" && <UploadMarks />}
         {activeSection === "assignments" && <Assignments />}
+        {activeSection === "solve-query" && <SolveQuery />}
       </div>
     </div>
   );
