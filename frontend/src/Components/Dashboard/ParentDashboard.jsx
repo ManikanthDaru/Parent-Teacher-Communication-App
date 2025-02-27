@@ -6,7 +6,7 @@ import ChildAttendance from './ChildAttendance';
 import ChildProgress from './ChildProgress';
 import ParentCommunication from './ParentCommunication';
 import Notifications from './Notifications';
-
+import ParentAssignments from './ParentAssignments';
 const ParentDashboard = () => {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
@@ -41,6 +41,14 @@ const ParentDashboard = () => {
               onClick={() => setActiveSection('progress')}
             >
               Progress Reports
+            </button>
+            <button
+              className={`w-full py-2 px-4 mb-2 text-left rounded-lg ${
+                activeSection === "assignments" ? "bg-indigo-500 text-white" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveSection("assignments")}
+            >
+              Assignments
             </button>
             <button
               className={`w-full py-2 px-4 mb-2 text-left rounded-lg ${activeSection === 'communication' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-200'}`}
@@ -95,6 +103,7 @@ const ParentDashboard = () => {
         )}
         {activeSection === 'attendance' && <ChildAttendance />}
         {activeSection === 'progress' && <ChildProgress />}
+        {activeSection === "assignments" && <ParentAssignments />}
         {activeSection === 'communication' && <ParentCommunication />}
         {activeSection === 'notifications' && <Notifications />}
       </div>

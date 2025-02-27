@@ -4,7 +4,6 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 const Assignment = require("../models/Assignment");
 const verifyToken = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
 // ✅ Configure Multer Storage for Cloudinary (Images Only)
@@ -44,6 +43,16 @@ router.post("/upload", verifyToken, upload.single("file"), async (req, res) => {
     } catch (error) {
         console.error("🚨 Server Error:", error);
         res.status(500).json({ message: "Error uploading assignment", error: error.message });
+    }
+});
+
+router.get("/", async (req, res) => {
+    try {
+        const assignments = await Assignment.find().sort({ dueDate: 1 });
+        res.json(assignments);
+    } catch (error) {
+        console.error("🚨 Error fetching assignments:", error);
+        res.status(500).json({ message: "Error fetching assignments" });
     }
 });
 

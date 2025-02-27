@@ -2,7 +2,7 @@ import { useState } from "react";
 import axiosInstance from "../Axios/AxiosInstance";
 import { UploadCloud, FileText, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { toast } from "react-hot-toast";
 const Assignments = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
@@ -38,7 +38,7 @@ const Assignments = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      alert("Assignment uploaded successfully!");
+      toast.success("Assignment uploaded successfully!");
       setTitle("");
       setFile(null);
       setDueDate("");
