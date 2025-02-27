@@ -14,8 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-const path = require("path");
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // ✅ Serve uploads folder
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);

@@ -1,49 +1,49 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 const Assignment = require("../models/Assignment");
 const verifyToken = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Multer setup
-const storage = multer.diskStorage({
-    destination: "uploads/",
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
+// ✅ Configure Multer Storage for Cloudinary (Images Only)
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "assignments",
+    allowed_formats: ["jpg", "jpeg", "png"],
+  },
 });
 
 const upload = multer({ storage });
 
-// Upload assignment
+// ✅ Upload Assignment (Images Only)
 router.post("/upload", verifyToken, upload.single("file"), async (req, res) => {
     try {
+        console.log("📌 Request Body:", req.body);
+        console.log("📌 Uploaded File:", req.file);
+
         if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
         const { title, dueDate } = req.body;
+        if (!title || !dueDate) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
 
         const newAssignment = new Assignment({
             title,
-            fileUrl: `/uploads/${req.file.filename}`,
+            fileUrl: req.file.path, // ✅ Cloudinary URL
             teacherId: req.user.id,
-            dueDate: new Date(dueDate), // Ensure date format is stored correctly
+            dueDate: new Date(dueDate),
         });
 
         await newAssignment.save();
+
         res.status(201).json({ message: "Assignment uploaded successfully", assignment: newAssignment });
     } catch (error) {
-        res.status(500).json({ message: "Error uploading assignment", error });
-    }
-});
-
-// Get all assignments
-router.get("/", verifyToken, async (req, res) => {
-    try {
-        const assignments = await Assignment.find().populate("teacherId", "name email");
-        res.status(200).json(assignments);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching assignments", error });
+        console.error("🚨 Server Error:", error);
+        res.status(500).json({ message: "Error uploading assignment", error: error.message });
     }
 });
 
