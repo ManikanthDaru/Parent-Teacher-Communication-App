@@ -92,14 +92,14 @@ const ParentDashboard = () => {
                 <Calendar className="w-10 h-10 text-indigo-500 mr-4" />
                 <div>
                   <p className="text-lg font-semibold">Attendance</p>
-                  <p className="text-2xl">95%</p>
+                  <p className="text-2xl">80%</p>
                 </div>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-md flex items-center">
                 <LineChart className="w-10 h-10 text-green-500 mr-4" />
                 <div>
                   <p className="text-lg font-semibold">Progress</p>
-                  <p className="text-2xl">A-</p>
+                  <p className="text-2xl">A+</p>
                 </div>
               </div>
             </div>

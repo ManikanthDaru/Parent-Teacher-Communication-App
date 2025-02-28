@@ -79,6 +79,25 @@ router.post("/solve-query/:queryId", async (req, res) => {
   }
 });
 
+// ✅ Get the Parent's Latest Query
+router.get("/parent-latest-query/:parentId", async (req, res) => {
+  try {
+    const { parentId } = req.params;
+
+    const latestQuery = await Query.findOne({ parentId })
+      .sort({ createdAt: -1 }) // Get the most recent query
+      .select("question answer status");
+
+    if (!latestQuery) {
+      return res.status(200).json({ message: "No queries found." });
+    }
+
+    res.json(latestQuery);
+  } catch (error) {
+    console.error("Error fetching parent query:", error);
+    res.status(500).json({ message: "Error fetching query", error });
+  }
+});
 
 module.exports = router;
 
