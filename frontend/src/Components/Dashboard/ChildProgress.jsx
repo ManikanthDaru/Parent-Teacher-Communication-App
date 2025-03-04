@@ -50,8 +50,12 @@ const ChildProgress = () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/gemini/analyze", // Backend API URL
-      { prompt: `Analyze this student's progress report:\n${JSON.stringify(progressReport)}` }
+      "https://parent-teacher-communication-app-backend.onrender.com/api/gemini/analyze", // Backend API URL
+      {
+        prompt: `Analyze this student's progress report:\n${JSON.stringify(
+          progressReport
+        )}`,
+      }
     );
 
     const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI.";
